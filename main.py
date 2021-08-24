@@ -21,16 +21,16 @@ torch.manual_seed(manualSeed)
 
 dataroot = "../data/panel_train_ver1/"
 workers = 4
-batch_size = 64
-image_size = 64
+batch_size = 8
+image_size = 183
 nc = 3  # Number of channels
 nz = 100  # Size of z latent vetector
-ngf = 64  # Size of feature maps in generator
-ndf = 64  # Size of feature maps in discriminator
+ngf = 183  # Size of feature maps in generator
+ndf = 183  # Size of feature maps in discriminator
 lr = 0.0002
 beta1 = 0.5  # hyper parameter for Adam optim
 ngpu = 1
-num_epochs = 30
+num_epochs = 100
 
 device = torch.device("cuda:0" if (torch.cuda.is_available() and ngpu > 0) else "cpu")
 writer = SummaryWriter(log_dir="runs/experiment2")
@@ -70,15 +70,21 @@ def train(train_dataloader):
 
             netD.zero_grad()
             real_cpu = data.to(device)
+
             b_size = real_cpu.size(0)
-            label = torch.full((b_size,), real_label, dtype=torch.float, device=device)
+            # label = torch.full((b_size,), real_label, dtype=torch.float, device=device)
 
             output = netD(real_cpu).view(-1)
+
+            b_size = int(len(output))
+
+            label = torch.full((b_size,), real_label, dtype=torch.float, device=device)
 
             errD_real = criterion(output, label)
             errD_real.backward()
             D_x = output.mean().item()
 
+            # noise = torch.randn(b_size, nz, 1, 1, device=device)
             noise = torch.randn(b_size, nz, 1, 1, device=device)
             fake = netG(noise)
             label.fill_(fake_label)

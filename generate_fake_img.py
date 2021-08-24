@@ -1,6 +1,4 @@
 import torch
-import albumentations.pytorch
-import albumentations.augmentations
 import matplotlib.pyplot as plt
 
 from model import Generator
@@ -16,13 +14,6 @@ ngpu = 1
 
 device = torch.device("cuda:0" if (torch.cuda.is_available() and ngpu > 0) else "cpu")
 
-transform = albumentations.Compose([
-    albumentations.Resize(height=image_size, width=image_size),
-    albumentations.CenterCrop(height=image_size, width=image_size),
-    albumentations.pytorch.ToTensorV2(),
-    albumentations.augmentations.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
-])
-
 
 class GenerateFace(object):
     def __init__(self, weight_path):
@@ -36,6 +27,7 @@ class GenerateFace(object):
         fake = self.G_model(noise)
         return fake
 
+
 if __name__ == "__main__":
     Generate_obj = GenerateFace('./checkpoint/best_weight.pth')
     output = Generate_obj.generate()
@@ -43,5 +35,4 @@ if __name__ == "__main__":
     for i in range(100):
         output = Generate_obj.generate()
         fake_image = fn_tonumpy(fn_denorm(output, mean=0.5, std=0.5)).squeeze()
-        plt.imsave("./fake_image/"+str(i)+".png", fake_image)
-
+        plt.imsave("./fake_image/" + str(i) + ".png", fake_image)
