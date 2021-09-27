@@ -6,10 +6,10 @@ from model import Generator
 fn_tonumpy = lambda x: x.to('cpu').detach().numpy().transpose(0, 2, 3, 1)
 fn_denorm = lambda x, mean, std: (x * std) + mean
 
-image_size = 64
+image_size = 128
 nc = 3  # Number of channels
 nz = 100  # Size of z latent vetector
-ngf = 64  # Size of feature maps in generator
+ngf = 128  # Size of feature maps in generator
 ngpu = 1
 
 device = torch.device("cuda:0" if (torch.cuda.is_available() and ngpu > 0) else "cpu")
