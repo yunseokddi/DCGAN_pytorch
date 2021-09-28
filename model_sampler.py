@@ -89,24 +89,24 @@ class Discriminator(nn.Module):
         return self.main(input)
 
 
-# nc = 3  # Number of channels
-# nz = 100  # Size of z latent vector
-# ngf = 128  # Size of feature maps in generator
-# ndf = 128  # Size of feature maps in discriminator
-# lr = 0.0002
-# beta1 = 0.5  # hyper parameter for Adam optim
-# ngpu = 1
+nc = 3  # Number of channels
+nz = 100  # Size of z latent vector
+ngf = 128  # Size of feature maps in generator
+ndf = 128  # Size of feature maps in discriminator
+lr = 0.0002
+beta1 = 0.5  # hyper parameter for Adam optim
+ngpu = 1
 
-# if __name__ == "__main__":
-#     netG = Generator(ngpu=0, nz=100, ngf=128, nc=3)
-#     netG.to('cuda')
-#
-#     netG.apply(weights_init)
-#
-#
-#
-#     summary(netG, input_size=(100,1,1))
-#
-#     netD = Discriminator(ngpu=1, nc=3, ndf=128)
-#     netD.apply(weights_init)
-#     print(netD)
+if __name__ == "__main__":
+    netG = Generator(ngpu=0, nz=100, ngf=128, nc=3)
+    netG.to('cuda')
+
+    netG.apply(weights_init)
+
+
+
+    summary(netG, input_size=(100,1,1))
+
+    netD = Discriminator(ngpu=1, nc=3, ndf=128)
+    netD.apply(weights_init)
+    print(netD)
